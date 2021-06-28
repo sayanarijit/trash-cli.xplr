@@ -1,13 +1,15 @@
-xplr plugin template
-====================
+trash-cli.xplr
+==============
 
-Use this template to [write your own xplr plugin](https://arijitbasu.in/xplr/en/writing-plugins.html).
+Trash files and directories using
+[trash-cli](https://github.com/andreafrancia/trash-cli).
 
 
 Requirements
 ------------
 
-- Some tool
+- [trash-cli](https://github.com/andreafrancia/trash-cli)
+- [fzf](https://github.com/junegunn/fzf) (for restoring)
 
 
 Installation
@@ -26,26 +28,28 @@ Installation
   ```bash
   mkdir -p ~/.config/xplr/plugins
 
-  git clone https://github.com/me/{plugin}.xplr ~/.config/xplr/plugins/{plugin}
+  git clone https://github.com/sayanarijit/trash-cli.xplr ~/.config/xplr/plugins/trash-cli
   ```
 
 - Require the module in `~/.config/xplr/init.lua`
 
   ```lua
-  require("{plugin}").setup()
+  require("trash-cli").setup()
   
   -- Or
   
-  require("{plugin}").setup{
-    mode = "action",
-    key = ":",
+  require("trash-cli").setup{
+    mode = "delete",
+    trash_key = "d",
+    restore_key = "r",
+    trash_list_selector = "fzf -m | awk '{print $3}'"
   }
 
-  -- Type `::` and chill
+  -- Type `dd` to trash, `dr` to restore.
   ```
 
 
 Features
 --------
 
-- Some cool feature
+- Restore multiple files at once using fzf multi select.
