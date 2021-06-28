@@ -57,6 +57,7 @@ local function setup(args)
 
         echo -e "$files" | while IFS= read -r line; do
           if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
+            echo FocusPath: '"'$line'"' >> "${XPLR_PIPE_MSG_IN:?}"
             echo LogSuccess: "Restored $line" >> "${XPLR_PIPE_MSG_IN:?}"
           else
             echo LogError: "Failed to restore $line" >> "${XPLR_PIPE_MSG_IN:?}"
