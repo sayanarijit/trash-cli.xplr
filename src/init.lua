@@ -6,12 +6,16 @@ local function setup(args)
     args = {}
   end
 
-  if args.mode == nil then
-    args.mode = "delete"
+  if args.trash_mode == nil then
+    args.trash_mode = "delete"
   end
 
   if args.trash_key == nil then
     args.trash_key = "d"
+  end
+
+  if args.restore_mode == nil then
+    args.restore_mode = "delete"
   end
 
   if args.restore_key == nil then
@@ -23,7 +27,7 @@ local function setup(args)
   end
 
   -- Trash: delete
-  xplr.config.modes.builtin[args.mode].key_bindings.on_key[args.trash_key] = {
+  xplr.config.modes.builtin[args.trash_mode].key_bindings.on_key[args.trash_key] = {
     help = "delete",
     messages = {
         {
@@ -44,7 +48,7 @@ local function setup(args)
   }
 
   -- Trash: restore
-  xplr.config.modes.builtin[args.mode].key_bindings.on_key[args.restore_key] = {
+  xplr.config.modes.builtin[args.restore_mode].key_bindings.on_key[args.restore_key] = {
     help = "restore",
     messages = {
       {

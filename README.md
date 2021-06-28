@@ -39,8 +39,9 @@ Installation
   -- Or
   
   require("trash-cli").setup{
-    mode = "delete",
+    trash_mode = "delete",
     trash_key = "d",
+    restore_mode = "delete",
     restore_key = "r",
     trash_list_selector = "fzf -m | awk '{print $3}'"
   }
