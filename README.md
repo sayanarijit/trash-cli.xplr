@@ -4,6 +4,8 @@ trash-cli.xplr
 Trash files and directories using
 [trash-cli](https://github.com/andreafrancia/trash-cli).
 
+[![xplr-trash-cli.gif](https://s6.gifyu.com/images/xplr-trash-cli.gif)](https://gifyu.com/image/Ah1L)
+
 
 Requirements
 ------------
