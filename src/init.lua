@@ -28,7 +28,7 @@ local function setup(args)
 
   -- Trash: delete
   xplr.config.modes.builtin[args.trash_mode].key_bindings.on_key[args.trash_key] = {
-    help = "delete",
+    help = "trash",
     messages = {
         {
           BashExecSilently = [===[
