@@ -23,7 +23,7 @@ local function setup(args)
   end
 
   if args.trash_list_selector == nil then
-    args.trash_list_selector = "fzf -m | awk '{print $3}'"
+    args.trash_list_selector = "fzf -m | cut -d' ' -f3-"
   end
 
   -- Trash: delete
@@ -53,16 +53,15 @@ local function setup(args)
     messages = {
       {
         BashExec = [===[
-        files="$(trash-list | ]===] .. args.trash_list_selector .. [===[)"
-
-        echo -e "$files" | while IFS= read -r line; do
-          if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
-            echo FocusPath: '"'$line'"' >> "${XPLR_PIPE_MSG_IN:?}"
-            echo LogSuccess: "Restored $line" >> "${XPLR_PIPE_MSG_IN:?}"
-          else
-            echo LogError: "Failed to restore $line" >> "${XPLR_PIPE_MSG_IN:?}"
-          fi
-        done
+        trash-list | ]===] .. args.trash_list_selector .. [===[ |
+          while IFS= read -r line; do
+            if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
+              echo FocusPath: '"'$line'"' >> "${XPLR_PIPE_MSG_IN:?}"
+              echo LogSuccess: "Restored $line" >> "${XPLR_PIPE_MSG_IN:?}"
+            else
+              echo LogError: "Failed to restore $line" >> "${XPLR_PIPE_MSG_IN:?}"
+            fi
+          done
 
         echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
         ]===]
