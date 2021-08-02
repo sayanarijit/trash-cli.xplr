@@ -45,7 +45,7 @@ Installation
     trash_key = "d",
     restore_mode = "delete",
     restore_key = "r",
-    trash_list_selector = "fzf -m | awk '{print $3}'"
+    trash_list_selector = "fzf -m | cut -d' ' -f3-"
   }
 
   -- Type `dd` to trash, `dr` to restore.
