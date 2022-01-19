@@ -1,28 +1,28 @@
-trash-cli.xplr
-==============
+# trash-cli.xplr
 
 Trash files and directories using
 [trash-cli](https://github.com/andreafrancia/trash-cli).
 
 [![xplr-trash-cli.gif](https://s6.gifyu.com/images/xplr-trash-cli.gif)](https://gifyu.com/image/Ah1L)
 
-
-Requirements
-------------
+## Requirements
 
 - [trash-cli](https://github.com/andreafrancia/trash-cli)
 - [fzf](https://github.com/junegunn/fzf) (for restoring)
 
-
-Installation
-------------
+## Installation
 
 ### Install manually
 
 - Add the following line in `~/.config/xplr/init.lua`
 
   ```lua
-  package.path = os.getenv("HOME") .. '/.config/xplr/plugins/?/src/init.lua'
+  local home = os.getenv("HOME")
+  package.path = home
+  .. "/.config/xplr/plugins/?/init.lua;"
+  .. home
+  .. "/.config/xplr/plugins/?.lua;"
+  .. package.path
   ```
 
 - Clone the plugin
@@ -37,9 +37,9 @@ Installation
 
   ```lua
   require("trash-cli").setup()
-  
+
   -- Or
-  
+
   require("trash-cli").setup{
     trash_mode = "delete",
     trash_key = "d",
@@ -51,8 +51,6 @@ Installation
   -- Type `dd` to trash, `dr` to restore.
   ```
 
-
-Features
---------
+## Features
 
 - Restore multiple files at once using fzf multi select.
