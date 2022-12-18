@@ -1,5 +1,4 @@
 local function setup(args)
-
   local xplr = xplr
 
   if args == nil then
@@ -30,20 +29,19 @@ local function setup(args)
   xplr.config.modes.builtin[args.trash_mode].key_bindings.on_key[args.trash_key] = {
     help = "trash",
     messages = {
-        {
-          BashExecSilently = [===[
-          while IFS= read -r line; do
+      {
+        BashExecSilently0 = [===[
+          while IFS= read -r -d "" line; do
             if trash-put -- "${line:?}"; then
-              echo LogSuccess: "Trashed $line" >> "${XPLR_PIPE_MSG_IN:?}"
+              "$XPLR" -m "LogSuccess: 'Trashed $line'"
             else
-              echo LogError: "Failed to trash $line" >> "${XPLR_PIPE_MSG_IN:?}"
+              "$XPLR" -m "LogError: 'Failed to trash $line'"
             fi
           done < "${XPLR_PIPE_RESULT_OUT:?}"
-
-          echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
-          ]===]
-        },
-        "PopMode",
+          "$XPLR" -m ExplorePwdAsync
+        ]===],
+      },
+      "PopMode",
     },
   }
 
@@ -52,19 +50,19 @@ local function setup(args)
     help = "restore",
     messages = {
       {
-        BashExec = [===[
-        trash-list | ]===] .. args.trash_list_selector .. [===[ |
-          while IFS= read -r line; do
-            if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
-              echo FocusPath: '"'$line'"' >> "${XPLR_PIPE_MSG_IN:?}"
-              echo LogSuccess: "Restored $line" >> "${XPLR_PIPE_MSG_IN:?}"
-            else
-              echo LogError: "Failed to restore $line" >> "${XPLR_PIPE_MSG_IN:?}"
-            fi
-          done
+        BashExec0 = [===[
+          trash-list | grep " $PWD/" | ]===] .. args.trash_list_selector .. [===[ |
+            while IFS= read -r line; do
+              if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
+                "$XPLR" -m "FocusPath: %q" "$line"
+                "$XPLR" -m "LogSuccess: 'Restored $line'"
+              else
+                "$XPLR" -m "LogError: 'Failed to restore $line'"
+              fi
+            done
 
-        echo ExplorePwdAsync >> "${XPLR_PIPE_MSG_IN:?}"
-        ]===]
+          "$XPLR" -m ExplorePwdAsync
+        ]===],
       },
       "PopMode",
     },
