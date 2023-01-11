@@ -5,25 +5,16 @@ local function setup(args)
     args = {}
   end
 
-  if args.trash_mode == nil then
-    args.trash_mode = "delete"
-  end
+  args.trash_bin = args.trash_bin or "trash-put"
+  args.trash_mode = args.trash_mode or "delete"
+  args.trash_key = args.trash_key or "d"
 
-  if args.trash_key == nil then
-    args.trash_key = "d"
-  end
+  args.restore_bin = args.restore_bin or "trash-restore"
+  args.restore_mode = args.restore_mode or "delete"
+  args.restore_key = args.restore_key or "r"
 
-  if args.restore_mode == nil then
-    args.restore_mode = "delete"
-  end
-
-  if args.restore_key == nil then
-    args.restore_key = "r"
-  end
-
-  if args.trash_list_selector == nil then
-    args.trash_list_selector = "fzf -m | cut -d' ' -f3-"
-  end
+  args.trash_list_bin = args.trash_list_bin or "trash-list"
+  args.trash_list_selector = args.trash_list_selector or "fzf -m | cut -d' ' -f3-"
 
   -- Trash: delete
   xplr.config.modes.builtin[args.trash_mode].key_bindings.on_key[args.trash_key] = {
@@ -32,7 +23,7 @@ local function setup(args)
       {
         BashExecSilently0 = [===[
           while IFS= read -r -d "" line; do
-            if trash-put -- "${line:?}"; then
+            if ]===] .. args.trash_bin .. [===[ -- "${line:?}"; then
               "$XPLR" -m "LogSuccess: %q" "Trashed $line"
             else
               "$XPLR" -m "LogError: %q" "Failed to trash $line"
@@ -50,10 +41,14 @@ local function setup(args)
     help = "restore",
     messages = {
       {
-        BashExec0 = [===[
-          trash-list | grep " $PWD/" | ]===] .. args.trash_list_selector .. [===[ |
+        BashExec0 = args.trash_list_bin
+          .. ' | grep " $PWD/" | '
+          .. args.trash_list_selector
+          .. [===[ |
             while IFS= read -r line; do
-              if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
+              if ([ -n "$line" ] && yes 0 | ]===]
+          .. args.restore_bin
+          .. [===[ -- "$line" > /dev/null); then
                 "$XPLR" -m "FocusPath: %q" "$line"
                 "$XPLR" -m "LogSuccess: %q" "Restored $line"
               else

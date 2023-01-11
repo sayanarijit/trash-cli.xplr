@@ -41,10 +41,13 @@ Trash files and directories using
   -- Or
 
   require("trash-cli").setup{
+    trash_bin = "trash-put",
     trash_mode = "delete",
     trash_key = "d",
+    restore_bin = "trash-restore",
     restore_mode = "delete",
     restore_key = "r",
+    trash_list_bin = "trash-list",
     trash_list_selector = "fzf -m | cut -d' ' -f3-"
   }
 
