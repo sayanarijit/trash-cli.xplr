@@ -33,9 +33,9 @@ local function setup(args)
         BashExecSilently0 = [===[
           while IFS= read -r -d "" line; do
             if trash-put -- "${line:?}"; then
-              "$XPLR" -m "LogSuccess: 'Trashed $line'"
+              "$XPLR" -m "LogSuccess: %q" "Trashed $line"
             else
-              "$XPLR" -m "LogError: 'Failed to trash $line'"
+              "$XPLR" -m "LogError: %q" "Failed to trash $line"
             fi
           done < "${XPLR_PIPE_RESULT_OUT:?}"
           "$XPLR" -m ExplorePwdAsync
@@ -55,9 +55,9 @@ local function setup(args)
             while IFS= read -r line; do
               if ([ -n "$line" ] && yes 0 | trash-restore -- "$line" > /dev/null); then
                 "$XPLR" -m "FocusPath: %q" "$line"
-                "$XPLR" -m "LogSuccess: 'Restored $line'"
+                "$XPLR" -m "LogSuccess: %q" "Restored $line"
               else
-                "$XPLR" -m "LogError: 'Failed to restore $line'"
+                "$XPLR" -m "LogError: %q" "Failed to restore $line"
               fi
             done
 
