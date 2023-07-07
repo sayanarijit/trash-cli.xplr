@@ -83,7 +83,6 @@ local function setup(args)
   }
 
   -- Trash: empty
-
   xplr.config.modes.builtin[args.empty_mode].key_bindings.on_key[args.empty_key] = {
     help = "empty trash",
     messages = {

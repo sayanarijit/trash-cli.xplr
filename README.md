@@ -68,7 +68,7 @@ Trash files and directories using
     global_restore_key = "R",
   }
 
-  -- Type `dd` to trash, `dr` or `dR` to restore.
+  -- Type `dd` to trash, `dr` or `dR` to restore, and `dE` to empty trash.
   ```
 
 ## Features
