@@ -1,7 +1,5 @@
 local xplr = xplr
 
-local q = xplr.util.shell_quote
-
 local function create_restore_action(
   help,
   mode,
@@ -16,7 +14,7 @@ local function create_restore_action(
     help = help,
     messages = {
       {
-        BashExec0 = q(list_bin)
+        BashExec0 = list_bin
             .. " | "
             .. grep
             .. " "
@@ -24,7 +22,7 @@ local function create_restore_action(
             .. [===[ |
                   while IFS= read -r line; do
                     if ([ -n "$line" ] && yes 0 | ]===]
-            .. q(restore_bin)
+            .. restore_bin
             .. [===[ -- "$line" > /dev/null); then
                       "$XPLR" -m "FocusPath: %q" "$line"
                       "$XPLR" -m "LogSuccess: %q" "Restored $line"
@@ -57,6 +55,10 @@ local function setup(args)
   args.global_restore_mode = args.global_restore_mode or "delete"
   args.global_restore_key = args.global_restore_key or "R"
 
+  args.empty_bin = args.empty_bin or "trash-empty"
+  args.empty_mode = args.empty_mode or "delete"
+  args.empty_key = args.empty_key or "E"
+
   args.trash_list_bin = args.trash_list_bin or "trash-list"
   args.trash_list_selector = args.trash_list_selector or "fzf -m | cut -d' ' -f3-"
 
@@ -74,6 +76,24 @@ local function setup(args)
             fi
           done < "${XPLR_PIPE_RESULT_OUT:?}"
           "$XPLR" -m ExplorePwdAsync
+        ]===],
+      },
+      "PopMode",
+    },
+  }
+
+  -- Trash: empty
+
+  xplr.config.modes.builtin[args.empty_mode].key_bindings.on_key[args.empty_key] = {
+    help = "empty trash",
+    messages = {
+      {
+        BashExec0 = [===[
+          if ]===] .. args.empty_bin .. [===[; then
+            "$XPLR" -m "LogSuccess: %q" "Emptied trash"
+          else
+            "$XPLR" -m "LogError: %q" "Failed to empty trash"
+          fi
         ]===],
       },
       "PopMode",
