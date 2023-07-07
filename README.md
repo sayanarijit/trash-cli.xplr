@@ -45,13 +45,20 @@ Trash files and directories using
     trash_mode = "delete",
     trash_key = "d",
     restore_bin = "trash-restore",
-    restore_mode = "delete",
-    restore_key = "r",
+
     trash_list_bin = "trash-list",
     trash_list_selector = "fzf -m | cut -d' ' -f3-"
+
+    -- restore files deleted from $PWD only
+    restore_mode = "delete",
+    restore_key = "r",
+
+    -- restore files deleted globally
+    global_restore_mode = "delete",
+    global_restore_key = "R",
   }
 
-  -- Type `dd` to trash, `dr` to restore.
+  -- Type `dd` to trash, `dr` or `dR` to restore.
   ```
 
 ## Features
