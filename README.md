@@ -54,7 +54,7 @@ Trash files and directories using
 
     -- Interactive selector
     trash_list_bin = "trash-list",
-    trash_list_selector = "fzf -m | cut -d' ' -f3-"
+    trash_list_selector = "fzf -m | cut -d' ' -f3-",
 
     -- Restore file(s)
     restore_bin = "trash-restore",
